@@ -8,22 +8,20 @@ const commentFormHandler = async (event) => {
         commentWar.style.display = 'block'
     }
     else if (comment) {
-      const response = await fetch('/api/comment', {
+      const response = await fetch('/api/post', {
         method: 'POST',
-        body: JSON.stringify({ name, budget_limit }),
+        body: JSON.stringify({ comment}),
         headers: { 'Content-Type': 'application/json' },
       });
   // If required fields are ok then reroute to dashboard
       if (response.ok) {
-        document.location.replace('/dash');
+        document.location.replace('/post');
         // otherwise it will fail to save budget and alert
       } else {
         
       }
     }
   };
-
-  // Call build-form handler
   document
     .querySelector('.comment-form')
     .addEventListener('submit', commentFormHandler);

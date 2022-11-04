@@ -2,26 +2,59 @@ const router = require('express').Router();
 const { Post } = require('../../models');
 const withAuth = require('../../utils/auth');
 
+
+// router.post('/', withAuth, async (req, res) => {
+//   try {
+//     const newcomment = await Post.create({
+//       ...req.body,
+//       user_id: req.session.user_id,
+//     });
+
+//     res.status(200).json(newcomment);
+//   } catch (err) {
+//     res.status(400).json(err);
+//   }
+// });
+
+// router.delete('/:id', withAuth, async (req, res) => {
+//   try {
+//     const commnetData = await Post.destroy({
+//       where: {
+//         id: req.params.id,
+//         user_id: req.session.user_id,
+//       },
+//     });
+
+//     if (!commentData) {
+//       res.status(404).json({ message: 'No post found with this id!' });
+//       return;
+//     }
+
+//     res.status(200).json(commentData);
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
+
+
+
 router.get("/", withAuth, (req, res) => {
-    Budget.findAll({
+    comment.findAll({
       where: {
         user_id: req.session.user_id,
       },
       include: [
         {
-          model: Expense,
-        },
-        {
-          model: User,
+          model: User
         },
       ],
     })
-      .then((budgetData) => {
+      .then((commentData) => {
         // serialize data before passing to template
-        const budgets = budgetData.map((budget) => budget.get({ plain: true }));
-        console.log(budgets);
+        const comment = commentData.map((commemt) => comment.get({ plain: true }));
+        console.log(comment);
   
-        res.render("buildbudget", { budgets, logged_in: req.session.logged_in });
+        res.render("commentpage", { comment, logged_in: req.session.logged_in });
       })
       .catch((err) => {
         console.log(err);
@@ -29,9 +62,9 @@ router.get("/", withAuth, (req, res) => {
       });
   });
   
-  router.get("/budget/:id", async (req, res) => {
+  router.get("/comment/:id", async (req, res) => {
     try {
-      const budgetData = await Budget.findByPk(req.params.id, {
+      const commenttData = await comment.findByPk(req.params.id, {
         include: [
           {
             model: User,
@@ -42,10 +75,10 @@ router.get("/", withAuth, (req, res) => {
         ],
       });
   
-      const budget = budgetData.get({ plain: true });
-      console.log("============this is budget data" + JSON.stringify(budget));
-      res.render("buildbudget", {
-        budget,
+      const comment = comment.get({ plain: true });
+      console.log("============this is comment data" + JSON.stringify(comment));
+      res.render("commentpage", {
+        comment,
         logged_in: req.session.logged_in,
       });
     } catch (err) {
